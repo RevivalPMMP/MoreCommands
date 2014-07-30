@@ -1,6 +1,6 @@
 name: MoreCommands
 main: GlaciercreepsMC\morecommands\MoreCommands
-version: 1.0.1
+version: 1.0.2
 api: [1.0.0, 1.1.0]
 description: Adds more commands for moderators and admins
 commands:
@@ -28,3 +28,10 @@ commands:
         usage: /unfreeze <player|me>
         description: Unfreezes a player or yourself
         default: op
+permissions:
+    morecommands.freeze:
+        default: op
+        description: Allows player to freeze others
+    morecommands.unfreeze:
+        default: op
+        description: Allows player to unfreeze others
