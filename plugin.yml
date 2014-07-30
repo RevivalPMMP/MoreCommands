@@ -1,0 +1,29 @@
+name: MoreCommands
+main: GlaciercreepsMC\morecommands\MoreCommands
+version: 1.0.1
+description: Adds more commands for moderators and admins
+commands:
+    gms:
+        usage: /gms
+        description: Changes gamemode to survival
+        default: op
+    gmc:
+        usage: /gmc
+        description: Changes gamemode to creative
+        default: op
+    gma:
+        usage: /gma
+        description: Changes gamemode to adventure
+        default: op
+    gmspc:
+        usage: /gmspc
+        description: Chagnes gamemode to spectator
+        default: op
+    freeze:
+        usage: /freeze <player|me>
+        description: Freezes a player or yourself
+        default: op
+    unfreeze:
+        usage: /unfreeze <player|me>
+        description: Unfreezes a player or yourself
+        default: op
