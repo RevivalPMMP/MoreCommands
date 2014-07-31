@@ -3,18 +3,18 @@
 namespace GlaciercreepsMC\morecommands;
 
 use pocketmine\plugin\PluginBase;
-use pocketmine\event\Listener;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 
-class MoreCommands extends PluginBase implements Listener {
+use GlaciercreepsMC\morecommands\manager\MuteManager;
+
+class MoreCommands extends PluginBase {
     
-    private $frozen = array();
-    private $unfrozen = array();
+    private $mutemanager;
     
     public function onEnable(){
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->mutemanager = new MuteManager($this);
     }
     
     public function onDisable() {}
@@ -74,114 +74,62 @@ class MoreCommands extends PluginBase implements Listener {
                 }
                 break;
                 
-            case "freeze":
-                //If the sender has permission, it'll return the usage; otherwise the server will say you don't have permission.
+            case "heal":
                 if (count($args) == 0){
-                    if ($sender->hasPermission("morecommands.freeze")){
-                        return false; //returns usage
+                    if ($sender instanceof Player){
+                        if ($sender->isOp()){
+                            $sender->setHealth(20);
+                            $sender->sendMessage("You have been healed.");
+                        }
+                    }
+                }
+                break;
+                
+            case "mute":
+                if (count($args) == 0){
+                    if ($sender->hasPermission("morecommands.mute")){
+                        return false;
+                        //if they have permission, return the usage; otherwise, say they dont have perms
                     }
                 }
                 
                 if (count($args) == 1){
-                    if ($sender->hasPermission("morecommands.freeze")){
-                        if ($args[0] == "me"){
-                            if (!($sender instanceof Player)){
-                                $sender->sendMessage("Only opped players can freeze themselves!");
-                                return true;
-                            }
-                            
-                            $this->freezePlayer($sender->getPlayer(), $sender);
+                    if ($sender->hasPermission("morecommands.mute")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
                         } else {
-                            $target = $this->getServer()->getPlayer($args[0]);
-                            $this->freezePlayer($target, $sender);
+                            $this->mutemanager->mutePlayer($target, $sender);
                             return true;
                         }
                     }
                 }
                 break;
                 
-            case "unfreeze":
-                //same here
+            case "unmute":
                 if (count($args) == 0){
-                    if ($sender->hasPermission("morecommands.unfreeze")){
+                    if ($sender->hasPermission("morecommands.unmute")){
                         return false;
                     }
                 }
                 
                 if (count($args) == 1){
-                    if ($sender->hasPermission("morecommands.unfreeze")){
-                        if ($args[0] == "me"){
-                            if (!($sender instanceof Player)){
-                                $sender->sendMessage("Only opped players can unfreeze themselves!");
-                                return true;
-                            }
-                            $this->unfreezePlayer($sender->getPlayer(), $sender);
-                            
+                    if ($sender->hasPermission("morecommands.unmute")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
                         } else {
-                            $target = $this->getServer()->getPlayer($args[0]);
-                            $this->unfreezePlayer($target, $sender);
+                            $this->mutemanager->unmutePlayer($target, $sender);
                         }
                     }
                 }
                 break;
+            //TODO implement freeze & unfreeze when PlayerMoveEvent is added
         }
         
         return true;
-    }
-    
-    /**
-     * 
-     * @param \pocketmine\Player $player
-     * @param \pocketmine\command\CommandSender $sender
-     * Freezes the specified player, if not null
-     */
-    public function freezePlayer(Player $player, CommandSender $sender){
-        if ($sender->hasPermission("morecommands.freeze")){
-            
-            if ($player == null){
-                $sender->sendMessage("Player '".$player."' was not found!");
-                return; //Stops code from runnning
-            }
-            
-            if (in_array($player, $this->frozen)){
-                $sender->sendMessage("Player '".$player->getName()."' is already frozen! Use /unfreeze <player>");
-            } else {
-                array_push($this->frozen, $player);
-                if ($player->getName() == $sender->getName()){
-                    $sender->sendMessage("You are now frozen. Use /unfreeze me to unfreeze yourself.");
-                } else {
-                    $sender->sendMessage("Player '".$player->getName()."' is now frozen.");
-                    $player->sendMessage("You were frozen by a moderator!");
-                }
-            }
-        }
-    }
-    
-    /**
-     * 
-     * @param \pocketmine\Player $player
-     * @param \pocketmine\command\CommandSender $sender
-     * Unfreezes the specified player, if not null
-     */
-    public function unfreezePlayer(Player $player, CommandSender $sender){
-        if ($sender->hasPermission("morecommands.unfreeze")){
-            
-            if ($player == null){
-                $sender->sendMessage("Player '".$player->getName()."' was not found!");
-            }
-            
-            if (in_array($player, $this->unfrozen)){
-                $sender->sendMessage("Player '".$player."' wasn't frozen!");
-            } else {
-                array_push($this->unfrozen, $player);
-                if ($player->getName() == $sender->getName()){
-                    $sender->sendMessage("You are now unfrozen. Use /freeze me to freeze yourself.");
-                } else {
-                    $sender->sendMessage("Player '".$player->getName()."' is now frozen.");
-                    $player->sendMessage("You are now unfrozen.");
-                }
-            }
-        }
     }
     
 }

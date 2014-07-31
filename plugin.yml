@@ -20,18 +20,18 @@ commands:
         usage: /gmspc
         description: Chagnes gamemode to spectator
         default: op
-    freeze:
-        usage: /freeze <player|me>
-        description: Freezes a player or yourself
+    mute:
+        usage: /mute <player>
+        description: Mutes a player
         default: op
-    unfreeze:
-        usage: /unfreeze <player|me>
-        description: Unfreezes a player or yourself
+    unmute:
+        usage: /unmute <player>
+        description: Unmutes a player
         default: op
 permissions:
-    morecommands.freeze:
+    morecommands.mute:
         default: op
-        description: Allows player to freeze others
-    morecommands.unfreeze:
+        description: Allows you to mute other players
+    morecommands.unmute:
         default: op
-        description: Allows player to unfreeze others
+        description: Allows you to unmute muted players
