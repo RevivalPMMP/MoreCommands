@@ -80,7 +80,7 @@ class MoreCommands extends PluginBase {
             case "heal":
                 if (count($args) == 0){
                     if ($sender instanceof Player){
-                        if ($sender->isOp()){
+                        if ($sender->hasPermission("morecommands.heal")){
                             $sender->setHealth(20);
                             $sender->sendMessage("You have been healed.");
                         }
