@@ -7,10 +7,24 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 
+<<<<<<< HEAD
 class MoreCommands extends PluginBase {
     
     public function onEnable(){
         
+=======
+use GlaciercreepsMC\morecommands\manager\MuteManager;
+use GlaciercreepsMC\morecommands\manager\FreezeManager;
+
+class MoreCommands extends PluginBase {
+    
+    public $mutemanager;
+    public $freezemanager;
+    
+    public function onEnable(){
+        $this->mutemanager = new MuteManager($this);
+        $this->freezemanager = new FreezeManager($this);
+>>>>>>> features
     }
     
     public function onDisable() {}
@@ -79,7 +93,105 @@ class MoreCommands extends PluginBase {
                         }
                     }
                 }
+                if (count($args) == 1){
+                    $target = $this->getServer()->getPlayer($args[0]);
+                    if ($target == null){
+                        $sender->sendMessage("Player '".$args[0]."' was not found!");
+                        return true;
+                    } else {
+                        $target->setHealth(20);
+                        $target->sendMessage("You have been healed.");
+                        $sender->sendMessage("Player '".$args[0]."' was healed.");
+                    }
+                }
                 break;
+<<<<<<< HEAD
+=======
+                
+            case "mute":
+                if (count($args) == 0){
+                    if ($sender->hasPermission("morecommands.mute")){
+                        return false;
+                        //if they have permission, return the usage; otherwise, say they dont have perms
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.mute")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->mutemanager->mutePlayer($target, $sender);
+                            return true;
+                        }
+                    }
+                }
+                break;
+                
+            case "unmute":
+                if (count($args) == 0){
+                    if ($sender->hasPermission("morecommands.unmute")){
+                        return false;
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.unmute")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->mutemanager->unmutePlayer($target, $sender);
+                        }
+                    }
+                }
+                break;
+                
+            case "freeze":
+                if (count($args) == 0) {
+                    if ($sender->hasPermission("morecommands.freeze")){
+                        return false;
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.freeze")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->freezemanager->freezePlayer($target, $sender);
+                            return true;
+                        }
+                    }
+                }
+                break;
+                
+            case "unfreeze":
+                if (count($args) == 0) {
+                    if ($sender->hasPermission("morecommands.unfreeze")){
+                        return false;
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.unfreeze")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->freezemanager->unfreezePlayer($target, $sender);
+                            return true;
+                        }
+                    }
+                }
+                break;
+>>>>>>> features
         }
         
         return true;
