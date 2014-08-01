@@ -6,13 +6,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
-
-<<<<<<< HEAD
-class MoreCommands extends PluginBase {
-    
-    public function onEnable(){
         
-=======
 use GlaciercreepsMC\morecommands\manager\MuteManager;
 use GlaciercreepsMC\morecommands\manager\FreezeManager;
 
@@ -24,7 +18,6 @@ class MoreCommands extends PluginBase {
     public function onEnable(){
         $this->mutemanager = new MuteManager($this);
         $this->freezemanager = new FreezeManager($this);
->>>>>>> features
     }
     
     public function onDisable() {}
@@ -105,8 +98,6 @@ class MoreCommands extends PluginBase {
                     }
                 }
                 break;
-<<<<<<< HEAD
-=======
                 
             case "mute":
                 if (count($args) == 0){
@@ -191,7 +182,6 @@ class MoreCommands extends PluginBase {
                     }
                 }
                 break;
->>>>>>> features
         }
         
         return true;

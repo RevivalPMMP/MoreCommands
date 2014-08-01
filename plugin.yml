@@ -15,15 +15,10 @@ commands:
         description: Changes gamemode to adventure
     gmspc:
         usage: /gmspc
-<<<<<<< HEAD
         description: Changes gamemode to spectator
-        default: op
     heal:
         usage: /heal [player]
         description: Heals you or a specified player
-        default: op
-=======
-        description: Chagnes gamemode to spectator
     mute:
         usage: /mute <player>
         description: Mutes a player
@@ -37,6 +32,9 @@ commands:
         usage: /unfreeze <player>
         description: Unfreezes a player
 permissions:
+    morecommands.heal:
+        default: op
+        description: Allows you to heal yourself or others
     morecommands.mute:
         default: op
         description: Allows you to mute other players
@@ -49,4 +47,3 @@ permissions:
     morecommands.unfreeze:
         default: op
         description: Allows you to unfreeze others
->>>>>>> features

@@ -50,7 +50,7 @@ class FreezeManager implements Listener {
         return $this->frozen;
     }
     
-    //Did NOT realize there was an EntityMoveEvent the first time
+    //Did NOT realize there was an EntityMoveEvent the first time :c
     public function onEntityMove(EntityMoveEvent $event)
     {
         $entity = $event->getEntity();
