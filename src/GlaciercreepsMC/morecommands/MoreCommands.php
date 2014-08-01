@@ -7,14 +7,10 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 
-use GlaciercreepsMC\morecommands\manager\MuteManager;
-
 class MoreCommands extends PluginBase {
     
-    private $mutemanager;
-    
     public function onEnable(){
-        $this->mutemanager = new MuteManager($this);
+        
     }
     
     public function onDisable() {}
@@ -84,49 +80,6 @@ class MoreCommands extends PluginBase {
                     }
                 }
                 break;
-                
-            case "mute":
-                if (count($args) == 0){
-                    if ($sender->hasPermission("morecommands.mute")){
-                        return false;
-                        //if they have permission, return the usage; otherwise, say they dont have perms
-                    }
-                }
-                
-                if (count($args) == 1){
-                    if ($sender->hasPermission("morecommands.mute")){
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
-                            return true;
-                        } else {
-                            $this->mutemanager->mutePlayer($target, $sender);
-                            return true;
-                        }
-                    }
-                }
-                break;
-                
-            case "unmute":
-                if (count($args) == 0){
-                    if ($sender->hasPermission("morecommands.unmute")){
-                        return false;
-                    }
-                }
-                
-                if (count($args) == 1){
-                    if ($sender->hasPermission("morecommands.unmute")){
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
-                            return true;
-                        } else {
-                            $this->mutemanager->unmutePlayer($target, $sender);
-                        }
-                    }
-                }
-                break;
-            //TODO implement freeze & unfreeze when PlayerMoveEvent is added
         }
         
         return true;

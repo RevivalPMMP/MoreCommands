@@ -18,20 +18,9 @@ commands:
         default: op
     gmspc:
         usage: /gmspc
-        description: Chagnes gamemode to spectator
+        description: Changes gamemode to spectator
         default: op
-    mute:
-        usage: /mute <player>
-        description: Mutes a player
+    heal:
+        usage: /heal [player]
+        description: Heals you or a specified player
         default: op
-    unmute:
-        usage: /unmute <player>
-        description: Unmutes a player
-        default: op
-permissions:
-    morecommands.mute:
-        default: op
-        description: Allows you to mute other players
-    morecommands.unmute:
-        default: op
-        description: Allows you to unmute muted players
