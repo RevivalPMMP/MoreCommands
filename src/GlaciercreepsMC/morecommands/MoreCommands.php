@@ -85,10 +85,11 @@ class MoreCommands extends PluginBase {
                             $sender->sendMessage("You have been healed.");
                         }
                     } else {
-                        $sender->sendMessage("Silly console, /heal is for players!");
+                        $sender->sendMessage("Silly console, heal is for players!");
                         return false;
                     }
                 }
+                
                 if (count($args) == 1){
                     $target = $this->getServer()->getPlayer($args[0]);
                     if ($target == null){
