@@ -83,6 +83,17 @@ class MoreCommands extends PluginBase {
                         }
                     }
                 }
+                if (count($args) == 1){
+                    $target = $this->getServer()->getPlayer($args[0]);
+                    if ($target == null){
+                        $sender->sendMessage("Player '".$args[0]."' was not found!");
+                        return true;
+                    } else {
+                        $target->setHealth(20);
+                        $target->sendMessage("You have been healed.");
+                        $sender->sendMessage("Player '".$args[0]."' was healed.");
+                    }
+                }
                 break;
                 
             case "mute":
