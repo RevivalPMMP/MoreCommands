@@ -79,14 +79,16 @@ class MoreCommands extends PluginBase {
                 
             case "heal":
                 if (count($args) == 0){
-                    if ($sender instanceof Player){
-                        if ($sender->hasPermission("morecommands.heal")){
+                    if ($sender->hasPermission("morecommands.heal")){
+                        if ($sender instanceof Player){
                             $sender->setHealth(20);
                             $sender->sendMessage("You have been healed.");
+                        } else {
+                            $sender->sendMessage("Silly console, /heal is for players!");
+                            return false;
+                            //Fun fact! I derped so much at trying to send the console a message here
+                            //not realizing I wasnt putting the updated plugin in the /plugins folder.
                         }
-                    } else {
-                        $sender->sendMessage("Silly console, heal is for players!");
-                        return false;
                     }
                 }
                 
