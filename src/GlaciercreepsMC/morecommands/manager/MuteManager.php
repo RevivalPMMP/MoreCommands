@@ -19,29 +19,41 @@ class MuteManager implements Listener {
     }
     
     public function mutePlayer(Player $player, CommandSender $sender){
-        if (in_array($player->getID(), $this->muted)){ //Use ID's instead of player names
-            $sender->sendMessage("Player '".$player->getName()."' is already muted!");
+        $id = $player->getID();
+        $name = $player->getName();
+        if (in_array($id, $this->muted)){
+            $sender->sendMessage("Player '".$name."' is already muted!");
         } else {
-            array_push($this->muted, $player->getID());
-            $sender->sendMessage("Player '".$player->getName()."' is now muted.");
+            $this->muted[$name] = $id;
+            $sender->sendMessage("Player '".$name."' has been muted.");
             $player->sendMessage("You have been muted.");
         }
     }
     
     public function unmutePlayer(Player $player, CommandSender $sender){
-        if (in_array($player->getID(), $this->muted)){
-            $sender->sendMessage("Player '".$player->getName()."' was unmuted.");
-            $player->sendMessage("You are now unmuted.");
-        } else {
-            $sender->sendMessage("Player '".$player->getName()."' was never muted!");
+        $id = $player->getID();
+        $name = $player->getName();
+        if (in_array($id, $this->muted)){
+            $index = array_search($id, $this->muted);
+            if ($index === false){
+                $sender->sendMessage("Player '".$name."' wasn't muted!");
+            } else {
+                unset($this->muted[$index]);
+                $sender->sendMessage("Player '".$name."' has been unmuted.");
+                $player->sendMessage("You have been unmuted.");
+            }
         }
     }
     
     public function onPlayerChat(PlayerChatEvent $event)
     {
         $player = $event->getPlayer();
-        if (in_array($player->getID(), $this->muted)){
-            $event->setCancelled();
+        foreach ($this->muted as $name => $id) {
+            if ($player->getName() === $name && $player->getID() === $id){
+                $event->setCancelled();
+            } else {
+                return;
+            }
         }
     }
     

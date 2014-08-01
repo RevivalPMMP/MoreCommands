@@ -7,27 +7,27 @@ commands:
     gms:
         usage: /gms
         description: Changes gamemode to survival
-        default: op
     gmc:
         usage: /gmc
         description: Changes gamemode to creative
-        default: op
     gma:
         usage: /gma
         description: Changes gamemode to adventure
-        default: op
     gmspc:
         usage: /gmspc
         description: Chagnes gamemode to spectator
-        default: op
     mute:
         usage: /mute <player>
         description: Mutes a player
-        default: op
     unmute:
         usage: /unmute <player>
         description: Unmutes a player
-        default: op
+    freeze:
+        usage: /freeze <player>
+        description: Freezes a player so they cant move
+    unfreeze:
+        usage: /unfreeze <player>
+        description: Unfreezes a player
 permissions:
     morecommands.mute:
         default: op
@@ -35,3 +35,9 @@ permissions:
     morecommands.unmute:
         default: op
         description: Allows you to unmute muted players
+    morecommands.freeze:
+        default: op
+        description: Allows you to freeze others
+    morecommands.unfreeze:
+        default: op
+        description: Allows you to unfreeze others

@@ -8,13 +8,16 @@ use pocketmine\command\Command;
 use pocketmine\Player;
 
 use GlaciercreepsMC\morecommands\manager\MuteManager;
+use GlaciercreepsMC\morecommands\manager\FreezeManager;
 
 class MoreCommands extends PluginBase {
     
-    private $mutemanager;
+    public $mutemanager;
+    public $freezemanager;
     
     public function onEnable(){
         $this->mutemanager = new MuteManager($this);
+        $this->freezemanager = new FreezeManager($this);
     }
     
     public function onDisable() {}
@@ -137,7 +140,48 @@ class MoreCommands extends PluginBase {
                     }
                 }
                 break;
-            //TODO implement freeze & unfreeze when PlayerMoveEvent is added
+                
+            case "freeze":
+                if (count($args) == 0) {
+                    if ($sender->hasPermission("morecommands.freeze")){
+                        return false;
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.freeze")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->freezemanager->freezePlayer($target, $sender);
+                            return true;
+                        }
+                    }
+                }
+                break;
+                
+            case "unfreeze":
+                if (count($args) == 0) {
+                    if ($sender->hasPermission("morecommands.unfreeze")){
+                        return false;
+                    }
+                }
+                
+                if (count($args) == 1){
+                    if ($sender->hasPermission("morecommands.unfreeze")){
+                        $target = $this->getServer()->getPlayer($args[0]);
+                        if ($target == null){
+                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            return true;
+                        } else {
+                            $this->freezemanager->unfreezePlayer($target, $sender);
+                            return true;
+                        }
+                    }
+                }
+                break;
         }
         
         return true;
