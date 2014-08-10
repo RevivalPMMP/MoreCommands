@@ -1,6 +1,6 @@
 name: MoreCommands
 main: GlaciercreepsMC\morecommands\MoreCommands
-version: 1.0.0
+version: 1.0.1
 api: [1.0.0, 1.1.0]
 description: Adds more commands for moderators and admins
 commands:
@@ -47,3 +47,15 @@ permissions:
     morecommands.unfreeze:
         default: op
         description: Allows you to unfreeze others
+    morecommands.gmc:
+        default: op
+        description: Lets you use /gmc
+    morecommands.gms:
+        default: op
+        description: Lets you use /gms
+    morecommands.gma:
+        default: op
+        description: Lets you use /gma
+    morecommands.gmspc:
+        default: op
+        description: Lets you use /gmspc

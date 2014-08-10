@@ -35,7 +35,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
-                if ($player->isOp()){
+                if ($player->hasPermission("morecommands.gms")){
                     $player->setGamemode(0);
                     return true;
                 }
@@ -47,7 +47,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
-                if ($player->isOp()){
+                if ($player->hasPermission("morecommands.gmc")){
                     $player->setGamemode(1);
                     return true;
                 }
@@ -59,7 +59,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
-                if ($player->isOp()){
+                if ($player->hasPermission("morecommands.gma")){
                     $player->setGamemode(2);
                     return true;
                 }
@@ -71,7 +71,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
-                if ($player->isOp()){
+                if ($player->hasPermission("morecommands.gmspc")){
                     $player->setGamemode(3);
                     return true;
                 }
