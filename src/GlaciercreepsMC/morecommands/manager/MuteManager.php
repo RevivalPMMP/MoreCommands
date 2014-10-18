@@ -22,10 +22,10 @@ class MuteManager implements Listener {
         $id = $player->getID();
         $name = $player->getName();
         if (in_array($id, $this->muted)){
-            $sender->sendMessage("Player '".$name."' is already muted!");
+            $sender->sendMessage("Player '$name' is already muted!");
         } else {
             $this->muted[$name] = $id;
-            $sender->sendMessage("Player '".$name."' has been muted.");
+            $sender->sendMessage("Player '$name' has been muted.");
             $player->sendMessage("You have been muted.");
         }
     }
@@ -36,10 +36,10 @@ class MuteManager implements Listener {
         if (in_array($id, $this->muted)){
             $index = array_search($id, $this->muted);
             if ($index === false){
-                $sender->sendMessage("Player '".$name."' wasn't muted!");
+                $sender->sendMessage("Player '$name' wasn't muted!");
             } else {
                 unset($this->muted[$index]);
-                $sender->sendMessage("Player '".$name."' has been unmuted.");
+                $sender->sendMessage("Player '$name' has been unmuted.");
                 $player->sendMessage("You have been unmuted.");
             }
         }
