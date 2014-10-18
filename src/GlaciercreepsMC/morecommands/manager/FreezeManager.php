@@ -4,7 +4,7 @@ namespace GlaciercreepsMC\morecommands\manager;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use pocketmine\event\entity\EntityMoveEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
 
@@ -23,10 +23,10 @@ class FreezeManager implements Listener {
         $name = $player->getName();
         
         if (in_array($id, $this->frozen)){
-            $sender->sendMessage("Player '".$name."' is already frozen!");
+            $sender->sendMessage("Player '$name' is already frozen!");
         } else {
             $this->frozen[$name] = $id;
-            $sender->sendMessage("Player '".$name."' is now frozen.");
+            $sender->sendMessage("Player '$name' is now frozen.");
             $player->sendMessage("You have been frozen.");
         }
     }
@@ -37,10 +37,10 @@ class FreezeManager implements Listener {
         if (in_array($id, $this->frozen)){
             $index = array_search($id, $this->frozen);
             if ($index === false){
-                $sender->sendMessage("Player '".$name."' wasn't frozen!");
+                $sender->sendMessage("Player '$name' wasn't frozen!");
             } else {
                 unset($this->frozen[$index]);
-                $sender->sendMessage("Player '".$name."' has been unfrozen.");
+                $sender->sendMessage("Player '$name' has been unfrozen.");
                 $player->sendMessage("You have been unfrozen.");
             }
         }
@@ -50,16 +50,13 @@ class FreezeManager implements Listener {
         return $this->frozen;
     }
     
-    //Did NOT realize there was an EntityMoveEvent the first time :c
-    public function onEntityMove(EntityMoveEvent $event)
+    
+    public function onEntityMove(PlayerMoveEvent $event)
     {
-        $entity = $event->getEntity();
-        if ($entity instanceof Player){
-            $player = $entity;
-            foreach ($this->frozen as $name => $id){
-                if ($player->getName() === $name && $player->getID() === $id){
-                    $event->setCancelled();
-                }
+        $player = $event->getPlayer();
+        foreach ($this->frozen as $name => $id){
+            if ($player->getName() === $name && $player->getID() === $id){
+                $event->setCancelled();
             }
         }
     }
