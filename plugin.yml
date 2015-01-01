@@ -1,7 +1,7 @@
 name: MoreCommands
 main: GlaciercreepsMC\morecommands\MoreCommands
-version: 1.0.1
-api: [1.0.0, 1.1.0]
+version: 1.0.2
+api: [1.0.0, 1.1.0, 1.6.0]
 description: Adds more commands for moderators and admins
 commands:
     gms:
@@ -16,6 +16,9 @@ commands:
     gmspc:
         usage: /gmspc
         description: Changes gamemode to spectator
+    slay:
+        usage: /slay <player>
+        description: Slays the specified player
     heal:
         usage: /heal [player]
         description: Heals you or a specified player
@@ -59,3 +62,6 @@ permissions:
     morecommands.gmspc:
         default: op
         description: Lets you use /gmspc
+    morecommands.slay:
+        default: op
+        description: Lets you /slay others
