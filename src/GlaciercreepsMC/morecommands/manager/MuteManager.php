@@ -11,7 +11,7 @@ use pocketmine\command\CommandSender;
 class MuteManager implements Listener {
     
     private $plugin;
-    private $muted = array();
+    private $muted = [];
     
     public function __construct(PluginBase $plugin) {
         $this->plugin = $plugin;
@@ -56,5 +56,4 @@ class MuteManager implements Listener {
             }
         }
     }
-    
 }
