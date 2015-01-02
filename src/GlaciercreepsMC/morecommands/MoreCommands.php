@@ -20,7 +20,6 @@ class MoreCommands extends PluginBase {
     
     public function onEnable(){
         $this->mutemanager = new MuteManager($this);
-        $version = floatval(substr($this->getServer()->getApiVersion(), 0, 4));
         $this->freezemanager = new FreezeManager($this);
     }
     
