@@ -10,7 +10,6 @@ use pocketmine\utils\TextFormat;
         
 use GlaciercreepsMC\morecommands\manager\MuteManager;
 use GlaciercreepsMC\morecommands\manager\FreezeManager;
-use GlaciercreepsMC\morecommands\manager\old\FreezeManagerOld;
 
 class MoreCommands extends PluginBase {
     
@@ -22,11 +21,7 @@ class MoreCommands extends PluginBase {
     public function onEnable(){
         $this->mutemanager = new MuteManager($this);
         $version = floatval(substr($this->getServer()->getApiVersion(), 0, 4));
-        if ($version >= 1.40){
-            $this->freezemanager = new FreezeManager($this);
-        } else {
-            $this->freezemanager = new FreezeManagerOld($this);
-        }
+        $this->freezemanager = new FreezeManager($this);
     }
     
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
@@ -39,12 +34,16 @@ class MoreCommands extends PluginBase {
             
             case "gms":
                 if (!($sender instanceof Player)){
-                    $sender->sendMessage($consoleMsg);
+                    $sender->sendMessage($this->consoleMsg);
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
                 if ($player->hasPermission("morecommands.gms")){
-                    $player->setGamemode(0);
+                    if ($player->getGamemode() == 0){
+                        $player->sendMessage(TextFormat::RED."You are already in survival mode!");
+                    } else {
+                        $player->setGamemode(0);
+                    }
                     return true;
                 } else {
                     $player->sendMessage($this->permMessage);
@@ -54,12 +53,16 @@ class MoreCommands extends PluginBase {
                 
             case "gmc":
                 if (!($sender instanceof Player)){
-                    $sender->sendMessage($consoleMsg);
+                    $sender->sendMessage($this->consoleMsg);
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
                 if ($player->hasPermission("morecommands.gmc")){
-                    $player->setGamemode(1);
+                    if ($player->getGamemode() == 1){
+                        $player->sendMessage(TextFormat::RED."You are already in creative mode!");
+                    } else {
+                        $player->setGamemode(1);
+                    }
                     return true;
                 } else {
                     $player->sendMessage($this->permMessage);
@@ -69,12 +72,16 @@ class MoreCommands extends PluginBase {
                 
             case "gma":
                 if (!($sender instanceof Player)){
-                    $sender->sendMessage($consoleMsg);
+                    $sender->sendMessage($this->consoleMsg);
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
                 if ($player->hasPermission("morecommands.gma")){
-                    $player->setGamemode(2);
+                    if ($player->getGamemode() == 2){
+                        $player->sendMessage(TextFormat::RED."You are already in adventure mode!");
+                    } else {
+                        $player->setGamemode(2);
+                    }
                     return true;
                 } else {
                     $player->sendMessage($this->permMessage);
@@ -84,12 +91,16 @@ class MoreCommands extends PluginBase {
             
             case "gmspc":
                 if (!($sender instanceof Player)){
-                    $sender->sendMessage($consoleMsg);
+                    $sender->sendMessage($this->consoleMsg);
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
                 if ($player->hasPermission("morecommands.gmspc")){
-                    $player->setGamemode(3);
+                    if ($player->getGamemode() == 3){
+                        $player->sendMessage(TextFormat::RED."You are already in spectator mode!");
+                    } else {
+                        $player->setGamemode(3);
+                    }
                     return true;
                 } else {
                     $player->sendMessage($this->permMessage);
