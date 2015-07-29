@@ -82,7 +82,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in adventure mode!");
                     } else {
                         $player->setGamemode(2);
-                        $player->sendMessage(TextFormat::GREEN."You are now in survival mode!");
+                        $player->sendMessage(TextFormat::GREEN."You are now in adventure mode!");
                     }
                     return true;
                 } else {
@@ -102,7 +102,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in spectator mode!");
                     } else {
                         $player->setGamemode(3);
-                        $player->sendMessage(TextFormat::GREEN."You are now in adventure mode!");
+                        $player->sendMessage(TextFormat::GREEN."You are now in spectator mode!");
                     }
                     return true;
                 } else {
