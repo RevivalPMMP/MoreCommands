@@ -7,6 +7,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat;
 
 class MuteManager implements Listener {
     
@@ -22,11 +23,13 @@ class MuteManager implements Listener {
         $id = $player->getID();
         $name = $player->getName();
         if (in_array($id, $this->muted)){
-            $sender->sendMessage("Player ".$name." is already muted!");
+            $sender->sendMessage(TextFormat::YELLOW."Player ".
+                TextFormat::BLUE.$name.TextFormat::YELLOW." is already muted!");
         } else {
             $this->muted[$name] = $id;
-            $sender->sendMessage("Player ".$name." has been muted.");
-            $player->sendMessage("You have been muted.");
+            $sender->sendMessage(TextFormat::GREEN."Player ".
+                    TextFormat::BLUE.$name.TextFormat::GREEN." has been muted.");
+            $player->sendMessage(TextFormat::RED."You have been muted.");
         }
     }
     
@@ -36,11 +39,13 @@ class MuteManager implements Listener {
         if (in_array($id, $this->muted)){
             $index = array_search($id, $this->muted);
             if ($index === false){
-                $sender->sendMessage("Player ".$name." wasn't muted!");
+                $sender->sendMessage(TextFormat::YELLOW."Player ".
+                        TextFormat::BLUE.$name.TextFormat::YELLOW." wasn't muted!");
             } else {
                 unset($this->muted[$index]);
-                $sender->sendMessage("Player ".$name." has been unmuted.");
-                $player->sendMessage("You have been unmuted.");
+                $sender->sendMessage(TextFormat::GREEN."Player ".
+                        TextFormat::BLUE.$name.TextFormat::GREEN." has been unmuted.");
+                $player->sendMessage(TextFormat::GREEN."You have been unmuted.");
             }
         }
     }

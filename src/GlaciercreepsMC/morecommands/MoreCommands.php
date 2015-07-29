@@ -42,6 +42,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in survival mode!");
                     } else {
                         $player->setGamemode(0);
+                        $player->sendMessage(TextFormat::GREEN."You are now in survival mode!");
                     }
                     return true;
                 } else {
@@ -61,6 +62,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in creative mode!");
                     } else {
                         $player->setGamemode(1);
+                        $player->sendMessage(TextFormat::GREEN."You are now in creative mode!");
                     }
                     return true;
                 } else {
@@ -80,6 +82,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in adventure mode!");
                     } else {
                         $player->setGamemode(2);
+                        $player->sendMessage(TextFormat::GREEN."You are now in survival mode!");
                     }
                     return true;
                 } else {
@@ -99,6 +102,7 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::RED."You are already in spectator mode!");
                     } else {
                         $player->setGamemode(3);
+                        $player->sendMessage(TextFormat::GREEN."You are now in adventure mode!");
                     }
                     return true;
                 } else {
@@ -115,11 +119,13 @@ class MoreCommands extends PluginBase {
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
                         if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '"
+                                    .TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $target->setHealth(0);
-                            $sender->sendMessage("Player '".$args[0]."' has been slain.");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                    TextFormat::BLUE.$args[0].TextFormat::YELLOW."' has been slain.");
                             return true;
                         }
                     }
@@ -137,19 +143,21 @@ class MoreCommands extends PluginBase {
                             return true;
                         } else {
                             $sender->setHealth(20);
-                            $sender->sendMessage("You have been healed.");
+                            $sender->sendMessage(TextFormat::GREEN."You have been healed.");
                             return true;
                         }
                     }
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
                         if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                    TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $target->setHealth(20);
-                            $target->sendMessage("You were healed.");
-                            $sender->sendMessage("Player '".$args[0]."' was healed.");
+                            $target->sendMessage(TextFormat::GREEN."You were healed.");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                    TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was healed.");
                             return true;
                         }
                     }
@@ -167,7 +175,8 @@ class MoreCommands extends PluginBase {
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
                         if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $this->mutemanager->mutePlayer($target, $sender);
@@ -188,7 +197,8 @@ class MoreCommands extends PluginBase {
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
                         if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $this->mutemanager->unmutePlayer($target, $sender);
@@ -202,14 +212,15 @@ class MoreCommands extends PluginBase {
                 break;
                 
             case "freeze":
-                if ($sender->hasPermission("morecommands.freeze")){
-                    if ($count == 0){
+                if ($sender->hasPermission("morecommands.freeze")) {
+                    if ($count == 0) {
                         return false;
                     }
-                    if ($count == 1){
+                    if ($count == 1) {
                         $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                        if ($target == null) {
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $this->freezemanager->freezePlayer($target, $sender);
@@ -230,7 +241,8 @@ class MoreCommands extends PluginBase {
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
                         if ($target == null){
-                            $sender->sendMessage("Player '".$args[0]."' was not found!");
+                            $sender->sendMessage(TextFormat::YELLOW."Player '".
+                                TextFormat::BLUE.$args[0].TextFormat::YELLOW."' was not found!");
                             return true;
                         } else {
                             $this->freezemanager->unfreezePlayer($target, $sender);
