@@ -1,7 +1,7 @@
 name: MoreCommands
 main: GlaciercreepsMC\morecommands\MoreCommands
 version: 1.0.2
-api: [1.4.0, 1.6.0, 1.7.0, 1.9.0, 1.10.0, 1.12.0]
+api: [1.10.0, 1.11.0, 1.12.0]
 description: Adds more commands for moderators and admins
 commands:
     gms:
