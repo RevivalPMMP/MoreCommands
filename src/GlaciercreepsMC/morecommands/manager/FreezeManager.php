@@ -26,11 +26,11 @@ class FreezeManager implements Listener {
         
         if (in_array($id, $this->frozen)){
             $sender->sendMessage(TextFormat::YELLOW."Player ".
-                TextFormat::BLUE.$name.TextFormat::YELLOW." is already frozen!");
+                TextFormat::AQUA.$name.TextFormat::YELLOW." is already frozen!");
         } else {
             $this->frozen[$name] = $id;
             $sender->sendMessage(TextFormat::GREEN."Player ".
-                TextFormat::BLUE.$name.TextFormat::GREEN." is now frozen.");
+                TextFormat::AQUA.$name.TextFormat::GREEN." is now frozen.");
             $player->sendMessage(TextFormat::AQUA."You have been frozen.");
         }
     }
@@ -42,11 +42,11 @@ class FreezeManager implements Listener {
             $index = array_search($id, $this->frozen);
             if ($index === false){
                 $sender->sendMessage(TextFormat::YELLOW."Player ".
-                    TextFormat::BLUE.$name.TextFormat::YELLOW." wasn't frozen!");
+                    TextFormat::AQUA.$name.TextFormat::YELLOW." wasn't frozen!");
             } else {
                 unset($this->frozen[$index]);
                 $sender->sendMessage(TextFormat::GREEN."Player ".
-                        TextFormat::BLUE.$name.TextFormat::GREEN." has been unfrozen.");
+                        TextFormat::AQUA.$name.TextFormat::GREEN." has been unfrozen.");
                 $player->sendMessage(TextFormat::GREEN."You have been unfrozen.");
             }
         }

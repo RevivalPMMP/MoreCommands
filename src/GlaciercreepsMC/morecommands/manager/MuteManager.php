@@ -24,11 +24,11 @@ class MuteManager implements Listener {
         $name = $player->getName();
         if (in_array($id, $this->muted)){
             $sender->sendMessage(TextFormat::YELLOW."Player ".
-                TextFormat::BLUE.$name.TextFormat::YELLOW." is already muted!");
+                TextFormat::AQUA.$name.TextFormat::YELLOW." is already muted!");
         } else {
             $this->muted[$name] = $id;
             $sender->sendMessage(TextFormat::GREEN."Player ".
-                    TextFormat::BLUE.$name.TextFormat::GREEN." has been muted.");
+                    TextFormat::AQUA.$name.TextFormat::GREEN." has been muted.");
             $player->sendMessage(TextFormat::RED."You have been muted.");
         }
     }
@@ -40,11 +40,11 @@ class MuteManager implements Listener {
             $index = array_search($id, $this->muted);
             if ($index === false){
                 $sender->sendMessage(TextFormat::YELLOW."Player ".
-                        TextFormat::BLUE.$name.TextFormat::YELLOW." wasn't muted!");
+                        TextFormat::AQUA.$name.TextFormat::YELLOW." wasn't muted!");
             } else {
                 unset($this->muted[$index]);
                 $sender->sendMessage(TextFormat::GREEN."Player ".
-                        TextFormat::BLUE.$name.TextFormat::GREEN." has been unmuted.");
+                        TextFormat::AQUA.$name.TextFormat::GREEN." has been unmuted.");
                 $player->sendMessage(TextFormat::GREEN."You have been unmuted.");
             }
         }
