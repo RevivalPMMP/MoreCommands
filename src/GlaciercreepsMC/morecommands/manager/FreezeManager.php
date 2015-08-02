@@ -21,7 +21,7 @@ class FreezeManager implements Listener, CommandExecutor {
     
     public function __construct(PluginBase $plugin) {
         $this->plugin = $plugin;
-        $this->plugin->getServer()->getPluginManager()->registerEvents($this, $this->plugin);
+        $plugin->getServer()->getPluginManager()->registerEvents($this, $this->plugin);
         $this->permMessage = TextFormat::RED."You do not have permission for this!";
     }
     
@@ -33,7 +33,7 @@ class FreezeManager implements Listener, CommandExecutor {
                 return false;
             }
             if ($count == 1) {
-                $target = $this->getServer()->getPlayer($args[0]);
+                $target = $this->plugin->getServer()->getPlayer($args[0]);
 
                 if ($target == null) {
                     $sender->sendMessage(TextFormat::YELLOW."Player '".
@@ -58,7 +58,7 @@ class FreezeManager implements Listener, CommandExecutor {
             }
             
             if ($count == 1){
-                $target = $this->getServer()->getPlayer($args[0]);
+                $target = $this->plugin->getServer()->getPlayer($args[0]);
 
                 if ($target == null){
                     $sender->sendMessage(TextFormat::YELLOW."Player '".
