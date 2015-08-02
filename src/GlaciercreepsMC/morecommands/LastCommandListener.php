@@ -31,7 +31,8 @@ class LastCommandListener implements Listener {
         $this->errorMessages = [
             "empty" => TextFormat::YELLOW."Command history empty!",
             "notbetween" => TextFormat::YELLOW."Invalid count. Must provide a # from 1-10",
-            "invalidcount" => TextFormat::YELLOW."Invalid. So far, you have run ".TextFormat::AQUA.$count.TextFormat::YELLOW." commands."
+            "invalidcount1" => TextFormat::YELLOW."Invalid. So far, you have run ",
+            "invalidcount2" => TextFormat::YELLOW." commands."
         ];
         
     }
@@ -107,7 +108,7 @@ class LastCommandListener implements Listener {
         
         $count = count($this->lastCommands[$id]);
         if ($backCount > $count){
-            $this->setLastCommandErrorMsg($this->errorMessages["invalidcount"]);
+            $this->setLastCommandErrorMsg($this->errorMessages["invalidcount1"].TextFormat::AQUA.$count.$this->errorMessages["invalidcount2"]);
             return null;
         }
         
