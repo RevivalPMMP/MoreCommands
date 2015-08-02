@@ -15,14 +15,25 @@ class LastCommandListener implements Listener {
     
     //each player or console will store an array of 10 past commands
     //(not including "/last") as history
-    private $lastCommands = [];
+    private $lastCommands;
     private $plugin;
-    private $errorMsg;
+    
+    private $errorMessages = [];
+    
+    //used to store the command sender's last (possible) error
+    private $msg;
+    
     
     public function __construct(PluginBase $plugin) {
         $this->plugin = $plugin;
 	$plugin->getServer()->getPluginManager()->registerEvents($this, $plugin);
-        $this->errorMsg = TextFormat::YELLOW."Command history empty!";
+        
+        $this->errorMessages = [
+            "empty" => TextFormat::YELLOW."Command history empty!",
+            "notbetween" => TextFormat::YELLOW."Invalid count. Must provide a # from 1-10",
+            "invalidcount" => TextFormat::YELLOW."Invalid. So far, you have run ".TextFormat::AQUA.$count.TextFormat::YELLOW." commands."
+        ];
+        
     }
     
     public function onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent $event){
@@ -73,31 +84,30 @@ class LastCommandListener implements Listener {
         unset($this->lastCommands[$event->getPlayer()->getUniqueId()]); //save memory
     }
     
-    //pseudocode
-    //   /last [n]
-    //   n meaning how many commands back; e.g.
+    //$backCount is how many commands back e.g.
     //history:
-    // [2] /say hi
-    // [1] /gmc
-    // 
-    // '/last 2' runs '/say hi'
-    
-    public function getLastCommand($id, CommandSender $sender, $backCount = 1){
+    //[3] - gma
+    //[2] - say hi
+    //[1] - gms
+    //last 3 = gma
+    public function getLastCommand(CommandSender $sender, $backCount = 1){
         
         if (!$this->hasLastCommand($sender)){
-            $sender->sendMessage($this->errorMsg);
+            $this->setLastCommandErrorMsg($this->errorMessages["empty"]);
             return null;
         }
         
         if ($backCount <= 0 || $backCount > 10){
-            $sender->sendMessage(TextFormat::YELLOW."Invalid count. Must provide a # from 1-10");
+            //$this(TextFormat::YELLOW."Invalid count. Must provide a # from 1-10");
+            $this->setLastCommandErrorMsg($this->errorMessages["notbetween"]);
             return null;
         }
         
+        $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
+        
         $count = count($this->lastCommands[$id]);
         if ($backCount > $count){
-            $sender->sendMessage
-                    (TextFormat::YELLOW."Invalid. So far, you have run ".TextFormat::AQUA.$count.TextFormat::YELLOW." commands.");
+            $this->setLastCommandErrorMsg($this->errorMessages["invalidcount"]);
             return null;
         }
         
@@ -114,30 +124,26 @@ class LastCommandListener implements Listener {
     
     public function hasLastCommand(CommandSender $sender){
         $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
+        
         return (count($this->lastCommands[$id]) >= 1);
     }
     
-    //some pseudocode, show what's expected
-    // ["/say hi", "/say hello"]
-    //showHistory:
-    //[1]: "/say hello"
-    //[2]: "/say hi"
-    public function showHistory($id, CommandSender $sender){
+    
+    
+    public function showHistory(CommandSender $sender){
+        $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
         $brack1 = TextFormat::GOLD."[";
         $brack2 = TextFormat::GOLD."]";
         $a = TextFormat::AQUA;
         $count = count($this->lastCommands[$id]);
         
+        
         if ($count === 0){
-            $sender->sendMessage($this->errorMsg);
+            $sender->sendMessage($this->emptyErrorMsg);
             return;
         }
         
         //i for counting down, j for going up the array
-        //$a = ["w", "t", "f"];
-        //i = 2, j = 0
-        //sendmsg(i, j
-        //
         for ($i = $count-1, $j = 0; $i >= 0; $i--, $j++){
             $sender->sendMessage($brack1.$a.($i+1).$brack2.": ".$a.$this->lastCommands[$id][$j]);
         }
@@ -152,11 +158,20 @@ class LastCommandListener implements Listener {
         }
     }
     
+    private function setLastCommandErrorMsg($msg){
+        $this->msg = $msg;
+    }
+    
+    public function getLastCommandErrorMsg(){
+        return $this->msg;
+    }
+
+
     //safe, this isn't called unless the array's count is at least 1
     //a reference, to not send a copy. I know, it shouldnt matter much as it's just 10 elements.
     //I like to save memory though.
     private function getLastElementIndex(array &$array){
-        //get key of last element
+        //get key of last element with these 2 lines
         end($array);
         $index = key($array);
         //points array's internal pointer to beginning element
