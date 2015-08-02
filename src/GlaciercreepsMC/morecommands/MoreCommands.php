@@ -214,33 +214,35 @@ class MoreCommands extends PluginBase {
             case "last":
                 //let the last (nth) command's owning plugin handle the perms
                 if ($count === 0){
-                    if ($sender instanceof Player)
-                        $this->getServer()->dispatchCommand($sender, $this->lastCommandListener->getLastCommand($sender->getUniqueId(), $sender));
-                    else
-                        $this->getServer()->dispatchCommand($sender, $this->lastCommandListener->getLastCommand("server", $sender));
-                    return true;
+                    $cmd = $this->lastCommandListener->getLastCommand($sender);
+                    if ($cmd !== null){
+                        $this->getServer()->dispatchCommand($sender, $cmd);
+                        return true;
+                    } else {
+                        //then an error message was set
+                        $sender->sendMessage($this->lastCommandListener->getLastCommandErrorMsg());
+                        return true;
+                    }
                 }
                 
                 else if ($count === 1){
                     
                     if ($args[0] === "history"){
-                        $this->lastCommandListener->showHistory(($sender instanceof Player ? $sender->getUniqueId() : "server"), $sender);
+                        $this->lastCommandListener->showHistory($sender);
                         return true;
                     } else {
                         
-                        $num = $args[0];
+                        $num = (int) args[0];
+                        if (!is_int($num)){
+                            return false;
+                        }
+                        $cmd = $this->lastCommandListener->getLastCommand($sender, $num);
                         
-                        if ($sender instanceof Player){
-                            $cmd = $this->lastCommandListener->getLastCommand($sender->getUniqueId(), $sender, $num);
-                            if ($cmd !== null){
-                                $this->getServer()->dispatchCommand($sender, $cmd);
-                            }
+                        if ($cmd !== null){
+                            $this->getServer()->dispatchCommand($sender, $cmd);
                             return true;
                         } else {
-                            $cmd = $this->lastCommandListener->getLastCommand("server", $sender, $num);
-                            if ($cmd !== null){
-                                $this->getServer()->dispatchCommand($sender, $cmd);
-                            }
+                            $sender->sendMessage($this->lastCommandListener->getLastCommandErrorMsg());
                             return true;
                         }
                         
