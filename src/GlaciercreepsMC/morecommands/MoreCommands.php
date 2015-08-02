@@ -232,7 +232,7 @@ class MoreCommands extends PluginBase {
                         return true;
                     } else {
                         
-                        $num = (int) args[0];
+                        $num = (int) $args[0];
                         if (!is_int($num)){
                             return false;
                         }
