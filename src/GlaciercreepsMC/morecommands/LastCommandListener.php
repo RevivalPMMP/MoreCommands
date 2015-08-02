@@ -48,7 +48,6 @@ class LastCommandListener implements Listener {
             } else {
                 $this->addCommandToHistory($id, $cmd);
             }
-            return;
             
         } else {
             if (strpos($cmd, "last") !== false){
