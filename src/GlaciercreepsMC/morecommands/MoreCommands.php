@@ -3,32 +3,57 @@
 namespace GlaciercreepsMC\morecommands;
 
 use pocketmine\plugin\PluginBase;
-use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
+use pocketmine\command\CommandExecutor;
+use pocketmine\command\PluginCommand;
+use pocketmine\permission\Permission;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
-        
+
 use GlaciercreepsMC\morecommands\manager\MuteManager;
 use GlaciercreepsMC\morecommands\manager\FreezeManager;
 
 class MoreCommands extends PluginBase {
     
-    public $mutemanager;
-    public $freezemanager;
+    public $freezeManager;
+    
+    private $lastCommandListener;
+    
     private $permMessage = TextFormat::RED."You do not have permission for this!";
     private $consoleMsg = TextFormat::RED."Only players may use this command!";
     
     public function onEnable(){
-        $this->mutemanager = new MuteManager($this);
-        $this->freezemanager = new FreezeManager($this);
+	//I use objects because I need to use them in this file
+        $muteManager = new MuteManager($this);
+        $this->registerCommand("mute", "/mute <player>", "Mutes a player", "morecommands.mute", "Allows you to mute players", "op", $muteManager);
+        $this->registerCommand("unmute", "/unmute <player>", "Unmutes a player", "morecommands.unmute", "Allows you to unmute players", "op", $muteManager);
+        
+        $freezeManager = new FreezeManager($this);
+        $this->registerCommand("freeze", "/freeze <player>", "Freezes a player", "morecommands.freeze", "Allows you to freeze players", "op", $freezeManager);
+        $this->registerCommand("unfreeze", "/unfreeze <player>", "Unfreezes a player", "morecommands.unfreeze", "Allows you to unfreeze players", "op", $freezeManager);
+        $this->lastCommandListener = new LastCommandListener($this);
     }
     
+    private function registerCommand($cmd, $usage, $desc, $permName, $permDesc, $permDefault, CommandExecutor $executor){
+        $command = new PluginCommand($cmd, $this);
+        $command->setUsage($usage);
+        $command->setDescription($desc);
+        
+        $perm = new Permission($permName);
+        $perm->setDescription($permDesc);
+        $perm->setDefault($permDefault);
+        $this->getServer()->getPluginManager()->addPermission($perm);
+        
+        $command->setExecutor($executor);
+        $this->getServer()->getCommandMap()->register("morecommands", $command);
+    }
+
+
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
         
         $cmd = strtolower($command->getName());
         $count = count($args);
-        //tip: Using $command->getName() allows use for aliases. Using $label would make aliases useless.
-        
         switch ($cmd){
             
             case "gms":
@@ -37,6 +62,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
+                
                 if ($player->hasPermission("morecommands.gms")){
                     if ($player->getGamemode() == 0){
                         $player->sendMessage(TextFormat::RED."You are already in survival mode!");
@@ -45,11 +71,13 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::GREEN."You are now in survival mode!");
                     }
                     return true;
+                    
                 } else {
                     $player->sendMessage($this->permMessage);
                     return true;
                 }
                 break;
+                
                 
             case "gmc":
                 if (!($sender instanceof Player)){
@@ -57,6 +85,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
+                
                 if ($player->hasPermission("morecommands.gmc")){
                     if ($player->getGamemode() == 1){
                         $player->sendMessage(TextFormat::RED."You are already in creative mode!");
@@ -65,11 +94,13 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::GREEN."You are now in creative mode!");
                     }
                     return true;
+                    
                 } else {
                     $player->sendMessage($this->permMessage);
                     return true;
                 }
                 break;
+                
                 
             case "gma":
                 if (!($sender instanceof Player)){
@@ -77,6 +108,7 @@ class MoreCommands extends PluginBase {
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
+                
                 if ($player->hasPermission("morecommands.gma")){
                     if ($player->getGamemode() == 2){
                         $player->sendMessage(TextFormat::RED."You are already in adventure mode!");
@@ -85,18 +117,21 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::GREEN."You are now in adventure mode!");
                     }
                     return true;
+                    
                 } else {
                     $player->sendMessage($this->permMessage);
                     return true;
                 }
                 break;
             
+                
             case "gmspc":
                 if (!($sender instanceof Player)){
                     $sender->sendMessage($this->consoleMsg);
                     return true;
                 }
                 $player = $this->getServer()->getPlayer($sender->getName());
+                
                 if ($player->hasPermission("morecommands.gmspc")){
                     if ($player->getGamemode() == 3){
                         $player->sendMessage(TextFormat::RED."You are already in spectator mode!");
@@ -105,11 +140,13 @@ class MoreCommands extends PluginBase {
                         $player->sendMessage(TextFormat::GREEN."You are now in spectator mode!");
                     }
                     return true;
+                    
                 } else {
                     $player->sendMessage($this->permMessage);
                     return true;
                 }
                 break;
+                
                 
             case "slay":
                 if ($sender->hasPermission("morecommands.slay")){
@@ -118,6 +155,7 @@ class MoreCommands extends PluginBase {
                     }
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
+                        
                         if ($target == null){
                             $sender->sendMessage(TextFormat::YELLOW."Player '"
                                     .TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
@@ -128,6 +166,7 @@ class MoreCommands extends PluginBase {
                                     TextFormat::AQUA.$args[0].TextFormat::YELLOW."' has been slain.");
                             return true;
                         }
+                        
                     }
                 } else {
                     $sender->sendMessage($this->permMessage);
@@ -135,9 +174,11 @@ class MoreCommands extends PluginBase {
                 }
                 break;
                 
+                
             case "heal":
                 if ($sender->hasPermission("morecommands.heal")){
                     if ($count == 0){
+                        
                         if (!($sender instanceof Player)){
                             $sender->sendMessage(TextFormat::RED."Silly console, /heal is for players!");
                             return true;
@@ -146,9 +187,11 @@ class MoreCommands extends PluginBase {
                             $sender->sendMessage(TextFormat::GREEN."You have been healed.");
                             return true;
                         }
+                        
                     }
                     if ($count == 1){
                         $target = $this->getServer()->getPlayer($args[0]);
+                        
                         if ($target == null){
                             $sender->sendMessage(TextFormat::YELLOW."Player '".
                                     TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
@@ -160,6 +203,7 @@ class MoreCommands extends PluginBase {
                                     TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was healed.");
                             return true;
                         }
+                        
                     }
                 } else {
                     $sender->sendMessage($this->permMessage);
@@ -167,93 +211,63 @@ class MoreCommands extends PluginBase {
                 }
                 break;
                 
-            case "mute":
-                if ($sender->hasPermission("morecommands.mute")){
-                    if ($count == 0){
-                        return false;
-                    }
-                    if ($count == 1){
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage(TextFormat::YELLOW."Player '".
-                                TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                            return true;
-                        } else {
-                            $this->mutemanager->mutePlayer($target, $sender);
-                            return true;
-                        }
-                    }
-                } else {
-                    $sender->sendMessage($this->permMessage);
+            case "last":
+                //let the last (nth) command's owning plugin handle the perms
+                if ($count === 0){
+                    if ($sender instanceof Player)
+                        $this->getServer()->dispatchCommand($sender, $this->lastCommandListener->getLastCommand($sender->getUniqueId(), $sender));
+                    else
+                        $this->getServer()->dispatchCommand($sender, $this->lastCommandListener->getLastCommand("server", $sender));
                     return true;
                 }
+                
+                else if ($count === 1){
+                    
+                    if ($args[0] === "history"){
+                        $this->lastCommandListener->showHistory(($sender instanceof Player ? $sender->getUniqueId() : "server"), $sender);
+                        return true;
+                    } else {
+                        
+                        $num = $args[0];
+                        
+                        if ($sender instanceof Player){
+                            $cmd = $this->lastCommandListener->getLastCommand($sender->getUniqueId(), $sender, $num);
+                            if ($cmd !== null){
+                                $this->getServer()->dispatchCommand($sender, $cmd);
+                            }
+                            return true;
+                        } else {
+                            $cmd = $this->lastCommandListener->getLastCommand("server", $sender, $num);
+                            if ($cmd !== null){
+                                $this->getServer()->dispatchCommand($sender, $cmd);
+                            }
+                            return true;
+                        }
+                        
+                    }
+                }
+                
+                else { return false; }
+                
                 break;
                 
-            case "unmute":
-                if ($sender->hasPermission("morecommands.unmute")){
-                    if ($count == 0){
-                        return false;
-                    }
-                    if ($count == 1){
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage(TextFormat::YELLOW."Player '".
-                                TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                            return true;
-                        } else {
-                            $this->mutemanager->unmutePlayer($target, $sender);
-                            return true;
-                        }
-                    }
-                } else {
-                    $sender->sendMessage($this->permMessage);
-                    return true;
-                }
-                break;
                 
-            case "freeze":
-                if ($sender->hasPermission("morecommands.freeze")) {
-                    if ($count == 0) {
-                        return false;
+	    case "uuid":
+                if ($sender->hasPermission("morecommands.uuid")){
+                    
+                    if (!($sender instanceof Player)){
+                        $sender->sendMessage($this->consoleMsg);
+                        return true;
                     }
-                    if ($count == 1) {
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null) {
-                            $sender->sendMessage(TextFormat::YELLOW."Player '".
-                                TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                            return true;
-                        } else {
-                            $this->freezemanager->freezePlayer($target, $sender);
-                            return true;
-                        }
-                    }
-                } else {
-                    $sender->sendMessage($this->permMessage);
-                    return true;
-                }
-                break;
                 
-            case "unfreeze":
-                if ($sender->hasPermission("morecommands.unfreeze")){
-                    if ($count == 0){
-                        return false;
-                    }
-                    if ($count == 1){
-                        $target = $this->getServer()->getPlayer($args[0]);
-                        if ($target == null){
-                            $sender->sendMessage(TextFormat::YELLOW."Player '".
-                                TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                            return true;
-                        } else {
-                            $this->freezemanager->unfreezePlayer($target, $sender);
-                            return true;
-                        }
-                    }
+                    $sender->sendMessage(TextFormat::YELLOW."Your UID is: ".TextFormat::AQUA.$sender->getUniqueId());
+                    $sender->sendMessage(TextFormat::YELLOW."Your EntityID is: ".TextFormat::AQUA.$sender->getId());
+                    return true;
                 } else {
                     $sender->sendMessage($this->permMessage);
                     return true;
                 }
-                break;
+		break;
         }
         
         return true;
