@@ -112,12 +112,14 @@ class LastCommandListener implements Listener {
         }
         
         
+        //for some reason, commands on the console wont work if it starts
+        //with a slash. substr() will get rid of it
         if ($backCount === 1){
             $index = $this->getLastElementIndex($this->lastCommands[$id]);
-            return $this->lastCommands[$id][$index];
+            return substr($this->lastCommands[$id][$index], 1);
         } else if ($backCount >= 2) {
             $index = $count - $backCount;
-            return $this->lastCommands[$id][$index];
+            return substr($this->lastCommands[$id][$index], 1);
         }
         
     }
