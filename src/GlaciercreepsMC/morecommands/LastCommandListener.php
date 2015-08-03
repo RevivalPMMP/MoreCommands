@@ -116,10 +116,10 @@ class LastCommandListener implements Listener {
         //with a slash. substr() will get rid of it
         if ($backCount === 1){
             $index = $this->getLastElementIndex($this->lastCommands[$id]);
-            return substr($this->lastCommands[$id][$index], 1);
+            return ($sender instanceof Player) ? (substr($this->lastCommands[$id][$index], 1)) : $this->lastCommands[$id][$index];
         } else if ($backCount >= 2) {
             $index = $count - $backCount;
-            return substr($this->lastCommands[$id][$index], 1);
+            return ($sender instanceof Player) ? (substr($this->lastCommands[$id][$index], 1)) : $this->lastCommands[$id][$index];
         }
         
     }
