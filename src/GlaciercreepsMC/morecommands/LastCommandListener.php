@@ -141,7 +141,7 @@ class LastCommandListener implements Listener {
         
         
         if ($count === 0){
-            $sender->sendMessage($this->emptyErrorMsg);
+            $sender->sendMessage($this->errorMessages["empty"]);
             return;
         }
         
