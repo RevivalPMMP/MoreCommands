@@ -27,53 +27,59 @@ class FreezeManager implements Listener, CommandExecutor {
     
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
         $count = count($args);
-        if ($sender->hasPermission("morecommands.freeze")) {
+        $cmd = strtolower($command);
+        
+        if ($cmd === "freeze"){
+            if ($sender->hasPermission("morecommands.freeze")) {
             
-            if ($count == 0) {
-                return false;
-            }
-            if ($count == 1) {
-                $target = $this->plugin->getServer()->getPlayer($args[0]);
-
-                if ($target == null) {
-                    $sender->sendMessage(TextFormat::YELLOW."Player '".
-                        TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                    return true;
-                } else {
-                    $this->freezePlayer($target, $sender);
-                    return true;
+                if ($count == 0) {
+                    return false;
                 }
+                if ($count == 1) {
+                    $target = $this->plugin->getServer()->getPlayer($args[0]);
+
+                    if ($target == null) {
+                        $sender->sendMessage(TextFormat::YELLOW."Player '".
+                            TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
+                        return true;
+                    } else {
+                        $this->freezePlayer($target, $sender);
+                        return true;
+                    }
                         
+                }
+            } else {
+                $sender->sendMessage($this->permMessage);
+                return true;
             }
-        } else {
-            $sender->sendMessage($this->permMessage);
-            return true;
         }
 
         
-        if ($sender->hasPermission("morecommands.unfreeze")){
+        if ($cmd === "unfreeze"){
+            if ($sender->hasPermission("morecommands.unfreeze")){
             
-            if ($count == 0){
-                return false;
-            }
-            
-            if ($count == 1){
-                $target = $this->plugin->getServer()->getPlayer($args[0]);
-
-                if ($target == null){
-                    $sender->sendMessage(TextFormat::YELLOW."Player '".
-                        TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
-                    return true;
-                } else {
-                    $this->unfreezePlayer($target, $sender);
-                    return true;
+                if ($count == 0){
+                    return false;
                 }
-        
-            }
             
-         } else {
-            $sender->sendMessage($this->permMessage);
-            return true;
+                if ($count == 1){
+                    $target = $this->plugin->getServer()->getPlayer($args[0]);
+
+                    if ($target == null){
+                        $sender->sendMessage(TextFormat::YELLOW."Player '".
+                            TextFormat::AQUA.$args[0].TextFormat::YELLOW."' was not found!");
+                        return true;
+                    } else {
+                        $this->unfreezePlayer($target, $sender);
+                        return true;
+                    }
+                
+                }
+    
+             } else {
+                $sender->sendMessage($this->permMessage);
+                return true;
+            }
         }
     }
     
