@@ -24,3 +24,5 @@ abstract class BaseCommand extends Command implements PluginIdentifiableCommand 
 	public function getUsage(){
 		$this->usageMessage;
 	}
+
+}
