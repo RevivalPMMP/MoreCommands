@@ -84,7 +84,7 @@ class FreezeManager implements Listener, CommandExecutor {
     }
     
     public function freezePlayer(Player $player, CommandSender $sender){
-        $id = $player->getUniqueId();
+        $id = $player->getUniqueId()->toString();
         $name = $player->getName();
         
         if (in_array($id, $this->frozen)){
@@ -100,7 +100,7 @@ class FreezeManager implements Listener, CommandExecutor {
     }
     
     public function unfreezePlayer(Player $player, CommandSender $sender){
-        $id = $player->getUniqueId();
+        $id = $player->getUniqueId()->toString();
         $name = $player->getName();
         
         if (in_array($id, $this->frozen)){
@@ -128,7 +128,7 @@ class FreezeManager implements Listener, CommandExecutor {
     {
         $player = $event->getPlayer();
         foreach ($this->frozen as $name => $id){
-            if ($player->getName() === $name && $player->getUniqueId() === $id){
+            if ($player->getName() === $name && $player->getUniqueId()->toString() === $id){
                 $event->setTo($event->getFrom());
             }
         }
@@ -137,7 +137,7 @@ class FreezeManager implements Listener, CommandExecutor {
     public function onBlockBreak(BlockBreakEvent $event){
         $player = $event->getPlayer();
         foreach ($this->frozen as $name => $id){
-            if ($player->getName() === $name && $player->getUniqueId() === $id){
+            if ($player->getName() === $name && $player->getUniqueId()->toString() === $id){
                 $event->setCancelled();
             }
         }
