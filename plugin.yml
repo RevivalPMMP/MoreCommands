@@ -1,6 +1,6 @@
 name: MoreCommands
 main: GlaciercreepsMC\morecommands\MoreCommands
 authors: [GlaciercreepsMC, TheDiamondYT]
-version: 1.1.3
-api: [1.10.0, 1.11.0, 1.12.0]
+version: 2.0
+api: [1.11.0, 1.12.0]
 description: Adds more commands for moderators and admins

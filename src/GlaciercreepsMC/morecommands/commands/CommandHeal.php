@@ -12,7 +12,7 @@ class CommandHeal extends BaseCommand {
 
 	public function execute(CommandSender $sender, $alias, array $args){
 		if(!$this->testPermission($sender)){
-			$sender->sendMessage(Color::RED. "You dont have permission to do this!");
+			$sender->sendMessage(Color::RED. "You dont have permission to heal!");
 			return false;
 		}
 		if($sender instanceof Player){
@@ -31,8 +31,8 @@ class CommandHeal extends BaseCommand {
 			$player = $this->getPlugin()->getServer()->getPlayer($args[1]);
 
 			$player->setHealth(20);
-			$player->sendMessage(Color::GREEN. "You have been healed by ". $sender->getName());
-			$sender->sendMessage(Color::GREEN. $player->getName(). " has been healed!");	
+			$player->sendMessage(Color::GREEN. "You have been healed by ". Color::YELLOW. $sender->getName());
+			$sender->sendMessage(Color::YELLOW. $player->getName(). Color::GREEN. " has been healed!");	
 			return true;
 		}
 	}
