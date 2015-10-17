@@ -11,7 +11,7 @@ abstract class BaseCommand extends Command implements PluginIdentifiableCommand 
 	private $consoleMsg;
 	private $usageMessage;
 
-	public function __construct(Moreommands $plugin, $name, $desc, $useMessage, $consoleUsageMessage = null, array $aliases = []){
+	public function __construct(MoreCommands $plugin, $name, $desc, $useMessage, array $aliases = [], $consoleUsageMessage = null){
 		parent::__construct($name, $desc, $useMessage, $aliases);
 		$this->plugin = $plugin;
 		$this->usageMessage = $useMessage;
