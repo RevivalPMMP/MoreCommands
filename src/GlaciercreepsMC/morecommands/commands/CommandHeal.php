@@ -5,8 +5,6 @@ use pocketmine\utils\TextFormat;
 use pocketmine\Player;
 class CommandHeal extends BaseCommand {
 	
-	private $plugin;
-	
 	public function __construct(MoreCommands $plugin){
 		parent::__construct($plugin, "heal", "Heal yourself or other player", "/heal [player]");
 		$this->setPermission("morecommands.heal");
