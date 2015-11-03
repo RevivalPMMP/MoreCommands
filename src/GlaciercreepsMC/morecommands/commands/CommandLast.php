@@ -53,18 +53,18 @@ class CommandLast extends BaseCommand implements Listener {
 
 		if ($count === 1){
 			if ($args[0] === "history"){
-				$this->showHistory($sender);
+				$this->showHistory($id);
 				return true;
 			}
 			
 			$backCount = (int) $args[0];
-			if (!is_int($index)){
+			if (!is_int($backCount)){
 				return false;
 			}
 			
 			$cmd = $this->getLastCommand($id, $backCount);
 			if ($cmd !== null){
-				$this->getPlugin()->getServer()->dispatchCommand($sender, $id);
+				$this->getPlugin()->getServer()->dispatchCommand($sender, $cmd);
 			} else {
 				$sender->sendMessage($this->getError());
 			}
@@ -73,7 +73,7 @@ class CommandLast extends BaseCommand implements Listener {
 	}
 	
 	public function onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent $event){
-		if (strpos($event->getMessage(), "last") !== FALSE) return;
+		if (strpos($event->getMessage(), "last") !== false) return;
 
 		$id = $event->getPlayer()->getUniqueId();
 		$cmd = $event->getMessage();
@@ -87,7 +87,7 @@ class CommandLast extends BaseCommand implements Listener {
 	}
 
 	public function onServerCommandEvent(ServerCommandEvent $event){
-		if (strpos($event->getCommand(), "last") !== FALSE) return;
+		if (strpos($event->getCommand(), "last") !== false) return;
 
 		$id = "server";
 		$cmd = $event->getCommand();
@@ -120,12 +120,11 @@ class CommandLast extends BaseCommand implements Listener {
 	}
 
 	/**
-	 * Shows the command history to the command history
+	 * Shows the command history to the command sender
 	 * 
-	 * @param type $id     The id of the command sender
+	 * @param string $id     The id of the command sender
 	 */
-	public function showHistory(CommandSender $sender){
-		$id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
+	public function showHistory($id){
 		if (!$this->hasLastCommand($id)){
 			$sender->sendMessage($this->errorMessages["empty"]);
 			return;
@@ -166,17 +165,18 @@ class CommandLast extends BaseCommand implements Listener {
 			return null;
 		}
 
-		if ($backCount > count($this->lastCommands[$id])){
-			$error = $this->errorMessages["toohigh1"].$backCount.$this->errorMessages["toohigh2"];
+		$count = count($this->lastCommands[$id]);
+		
+		if ($backCount > $count){
+			$error = $this->errorMessages["toohigh1"].$count.$this->errorMessages["toohigh2"];
 			$this->setError($error);
 			return null;
 		}
 
 		if ($backCount === 1){
-			$index = count($this->lastCommands[$id]) - 1;
+			$index = $count - 1;
 			return ($id !== "server") ? substr($this->lastCommands[$id][$index], 1) : $this->lastCommands[$id][$index];
 		} else {
-			$count = count($this->lastCommands[$id]);
 			$index = $count - $backCount;
 			return ($id !== "server") ? substr($this->lastCommands[$id][$index], 1) : $this->lastCommands[$id][$index];
 		}
@@ -196,7 +196,7 @@ class CommandLast extends BaseCommand implements Listener {
 	/**
 	 * Gets the last possible error caused while running the command.
 	 * 
-	 * @return string     The  last error. 
+	 * @return string     The last error. 
 	 */
 	public function getError(){
 		return $this->msg;
