@@ -41,7 +41,7 @@ class LastCommandListener implements Listener {
         $id = $event->getPlayer()->getUniqueId()->toString();
         $cmd = strtolower($event->getMessage());
         
-        if (!isset($this->lastCommands[$id])){
+        if (!array_key_exists($id, $this->lastCommands)){
             $this->lastCommands[$id] = [];
             if (strpos($cmd, "last") !== false){
                 return;
@@ -62,7 +62,7 @@ class LastCommandListener implements Listener {
     public function onServerCommandEvent(ServerCommandEvent $event){
         $cmd = strtolower($event->getCommand());
         
-	if (!isset($this->lastCommands["server"])){
+	if (!array_key_exists($id, $this->lastCommands)){
             $this->lastCommands["server"] = [];
             if (strpos($cmd, "last") !== false){
                 return;
