@@ -59,22 +59,25 @@ class LastCommandListener implements Listener {
         
     }
     
+    //this function and the last have ugly code; this is fixed
+    //in the rewrite
     public function onServerCommandEvent(ServerCommandEvent $event){
         $cmd = strtolower($event->getCommand());
+	$id = "server";
         
 	if (!array_key_exists($id, $this->lastCommands)){
-            $this->lastCommands["server"] = [];
+            $this->lastCommands[$id] = [];
             if (strpos($cmd, "last") !== false){
                 return;
             } else {
-                $this->addCommandToHistory("server", $cmd);
+                $this->addCommandToHistory($id, $cmd);
             }
             
         } else {
             if (strpos($cmd, "last") !== false){
                 return;
             } else {
-                $this->addCommandToHistory("server", $cmd);
+                $this->addCommandToHistory($id, $cmd);
             }
         }
         
