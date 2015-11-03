@@ -1,5 +1,7 @@
 <?php
 
+namespace GlaciercreepsMC\morecommands\commands;
+
 use GlaciercreepsMC\morecommands\base\BaseCommand;
 use GlaciercreepsMC\morecommands\MoreCommands;
 
