@@ -21,9 +21,9 @@ class CommandLast extends BaseCommand implements Listener {
 	//used to store the command sender's last possible error
 	private $msg;
 	
-	public function __construct(MoreCommands $plugin, $name, $desc, $useMessage, array $aliases = [], $consoleUsageMessage = null) {
+	public function __construct(MoreCommands $plugin) {
 		parent::__construct($plugin, "last", "Repeats last nth command", "/last or /last <1-10>", $aliases, null);
-		$plugin->getServer()->getPluginManager()->registerEvents($listener, $plugin);
+		$plugin->getServer()->getPluginManager()->registerEvents($this, $plugin);
 		
 		$this->lastCommands = [];
 		
