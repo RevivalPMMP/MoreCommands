@@ -18,7 +18,7 @@ class LastCommandListener implements Listener {
     private $lastCommands;
     private $plugin;
     
-    private $errorMessages = [];
+    private $errorMessages;
     
     //used to store the command sender's last (possible) error
     private $msg;
@@ -26,6 +26,7 @@ class LastCommandListener implements Listener {
     
     public function __construct(PluginBase $plugin) {
         $this->plugin = $plugin;
+	$this->lastCommands = [];
 	$plugin->getServer()->getPluginManager()->registerEvents($this, $plugin);
         
         $this->errorMessages = [
