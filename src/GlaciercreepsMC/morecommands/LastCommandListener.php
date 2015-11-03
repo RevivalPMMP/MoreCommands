@@ -38,7 +38,7 @@ class LastCommandListener implements Listener {
     }
     
     public function onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent $event){
-        $id = $event->getPlayer()->getUniqueId()->toString();
+        $id = $event->getPlayer()->getUniqueId();
         $cmd = strtolower($event->getMessage());
         
         if (!array_key_exists($id, $this->lastCommands)){
@@ -81,7 +81,7 @@ class LastCommandListener implements Listener {
     }
     
     public function onPlayerQuit(PlayerQuitEvent $event){
-        unset($this->lastCommands[$event->getPlayer()->getUniqueId()->toString()]); //save memory
+        unset($this->lastCommands[$event->getPlayer()->getUniqueId()]); //save memory
     }
     
     //$backCount is how many commands back e.g.
@@ -103,7 +103,7 @@ class LastCommandListener implements Listener {
             return null;
         }
         
-        $id = ($sender instanceof Player) ? $sender->getUniqueId()->toString() : "server";
+        $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
         
         $count = count($this->lastCommands[$id]);
         if ($backCount > $count){
@@ -125,7 +125,7 @@ class LastCommandListener implements Listener {
     }
     
     public function hasLastCommand(CommandSender $sender){
-        $id = ($sender instanceof Player) ? $sender->getUniqueId()->toString() : "server";
+        $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
         
         return (count($this->lastCommands[$id]) >= 1);
     }
@@ -133,7 +133,7 @@ class LastCommandListener implements Listener {
     
     
     public function showHistory(CommandSender $sender){
-        $id = ($sender instanceof Player) ? $sender->getUniqueId()->toString() : "server";
+        $id = ($sender instanceof Player) ? $sender->getUniqueId() : "server";
         $brack1 = TextFormat::GOLD."[";
         $brack2 = TextFormat::GOLD."]";
         $a = TextFormat::AQUA;

@@ -80,7 +80,7 @@ class MuteManager implements Listener, CommandExecutor{
     }
     
     public function mutePlayer(Player $player, CommandSender $sender){
-        $id = $player->getUniqueId()->toString();
+        $id = $player->getUniqueId();
         $name = $player->getName();
         
         if (in_array($id, $this->muted)){
@@ -96,7 +96,7 @@ class MuteManager implements Listener, CommandExecutor{
     }
     
     public function unmutePlayer(Player $player, CommandSender $sender){
-        $id = $player->getUniqueId()->toString();
+        $id = $player->getUniqueId();
         $name = $player->getName();
         
         if (in_array($id, $this->muted)){
@@ -120,7 +120,7 @@ class MuteManager implements Listener, CommandExecutor{
     {
         $player = $event->getPlayer();
         foreach ($this->muted as $name => $id) {
-            if ($player->getName() === $name && $player->getUniqueId()->toString() === $id){
+            if ($player->getName() === $name && $player->getUniqueId() === $id){
                 $event->setCancelled();
             } else {
                 return;
